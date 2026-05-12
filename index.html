@@ -1,0 +1,199 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.sim-wrap{padding:1rem 0;font-family:var(--font-sans)}
+.hero{background:#E6F1FB;border-radius:var(--border-radius-lg);padding:1.5rem;margin-bottom:1.5rem;border:0.5px solid #B5D4F4;display:flex;align-items:center;gap:1rem}
+.hero-icon{width:52px;height:52px;border-radius:var(--border-radius-md);background:#185FA5;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hero-icon i{font-size:26px;color:#E6F1FB}
+.hero h1{font-size:17px;font-weight:500;color:#0C447C;margin-bottom:3px}
+.hero p{font-size:13px;color:#185FA5}
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px;text-align:center}
+.stat-val{font-size:22px;font-weight:500;color:var(--color-text-primary)}
+.stat-lbl{font-size:11px;color:var(--color-text-secondary);margin-top:2px;text-transform:uppercase;letter-spacing:.04em}
+.prog-wrap{margin-bottom:1.25rem}
+.prog-header{display:flex;justify-content:space-between;font-size:12px;color:var(--color-text-secondary);margin-bottom:6px}
+.prog-track{background:var(--color-background-secondary);border-radius:99px;height:6px;overflow:hidden;border:0.5px solid var(--color-border-tertiary)}
+.prog-fill{background:#185FA5;height:6px;border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.qcard{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1.25rem 1.25rem 1rem;margin-bottom:1rem}
+.qbadge{display:inline-flex;align-items:center;gap:5px;background:#E6F1FB;color:#185FA5;border-radius:99px;font-size:11px;font-weight:500;padding:3px 10px;margin-bottom:10px}
+.qtext{font-size:15px;font-weight:500;color:var(--color-text-primary);line-height:1.55;margin-bottom:1rem}
+.opts{display:flex;flex-direction:column;gap:7px}
+.opt{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);cursor:pointer;background:var(--color-background-primary);font-size:14px;color:var(--color-text-primary);line-height:1.5;text-align:left;width:100%;transition:background .12s,border-color .12s}
+.opt:hover:not(.dis){background:var(--color-background-secondary);border-color:var(--color-border-secondary)}
+.opt.sel{border-color:#185FA5;background:#E6F1FB;color:#0C447C}
+.opt.ok{border-color:#3B6D11;background:#EAF3DE;color:#27500A}
+.opt.bad{border-color:#A32D2D;background:#FCEBEB;color:#791F1F}
+.opt.show-ok{border-color:#3B6D11;background:#EAF3DE;color:#27500A}
+.opt.dis{cursor:default;pointer-events:none}
+.opt-letter{font-weight:500;min-width:20px;font-size:13px}
+.opt-icon{font-size:15px;margin-left:auto;flex-shrink:0;align-self:center}
+.fb{margin-top:12px;padding:10px 12px;border-radius:var(--border-radius-md);font-size:13px;line-height:1.55;display:flex;gap:8px;align-items:flex-start}
+.fb.ok{background:#EAF3DE;color:#27500A;border:0.5px solid #97C459}
+.fb.bad{background:#FCEBEB;color:#791F1F;border:0.5px solid #F09595}
+.fb i{font-size:16px;margin-top:1px;flex-shrink:0}
+.nav-row{display:flex;gap:8px;margin-top:1rem}
+.nav-row button{flex:1}
+.btn-primary{background:#185FA5;color:#E6F1FB;border:0.5px solid #185FA5;border-radius:var(--border-radius-md);padding:9px 16px;font-size:14px;font-weight:500;cursor:pointer;transition:background .12s}
+.btn-primary:hover{background:#0C447C}
+.btn-primary:disabled{background:var(--color-background-secondary);color:var(--color-text-secondary);border-color:var(--color-border-tertiary);cursor:not-allowed}
+.result-hero{text-align:center;padding:2rem 1.25rem}
+.result-ring{width:100px;height:100px;border-radius:50%;border:4px solid #185FA5;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1rem}
+.result-pct{font-size:26px;font-weight:500;color:#185FA5}
+.result-sub{font-size:11px;color:#185FA5}
+.pass-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 14px;border-radius:99px;font-size:13px;font-weight:500;margin-bottom:0.75rem}
+.pass-badge.pass{background:#EAF3DE;color:#27500A}
+.pass-badge.fail{background:#FCEBEB;color:#791F1F}
+.result-msg{font-size:14px;color:var(--color-text-secondary);max-width:320px;margin:0 auto 1.5rem;line-height:1.6}
+.result-actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.review-section{margin-top:1.5rem}
+.review-item{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:0.75rem}
+.review-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.review-num{font-size:12px;color:var(--color-text-secondary);font-weight:500}
+.review-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:500;padding:2px 8px;border-radius:99px}
+.review-tag.ok{background:#EAF3DE;color:#27500A}
+.review-tag.bad{background:#FCEBEB;color:#791F1F}
+</style>
+
+<div class="sim-wrap">
+<div class="hero">
+  <div class="hero-icon"><i class="ti ti-certificate" aria-hidden="true"></i></div>
+  <div>
+    <h1>Google Certified Educator — Level 1</h1>
+    <p>37 questions &nbsp;·&nbsp; Select the best answer &nbsp;·&nbsp; Pass mark: 75%</p>
+  </div>
+</div>
+<div id="main"></div>
+</div>
+
+<script>
+const Q=[
+  {q:"A teacher wants students to collaborate on a shared document in real time. Which Google Workspace tool is most appropriate?",opts:["Google Docs","Google Slides","Google Sites","Google Keep"],a:0,exp:"Google Docs allows multiple users to edit and comment simultaneously in real time, making it ideal for collaborative writing tasks."},
+  {q:"Which feature in Gmail allows a teacher to schedule an email to be sent at a later time?",opts:["Confidential mode","Schedule send","Snooze","Archive"],a:1,exp:"'Schedule send' lets you compose an email now and choose a future date and time for delivery."},
+  {q:"A teacher wants to assess students with automatic grading. Which Google tool supports this?",opts:["Google Docs","Google Forms","Google Slides","Google Sites"],a:1,exp:"Google Forms supports multiple choice and short-answer questions with built-in automatic grading when an answer key is set."},
+  {q:"How can a teacher share a Google Drive folder so students can only view files but not edit them?",opts:["Share with 'Editor' access","Share with 'Viewer' access","Make the folder public","Download and email files"],a:1,exp:"Setting share permission to 'Viewer' allows students to open and read files without making any changes."},
+  {q:"Which Google Classroom feature allows a teacher to post an announcement to all students?",opts:["Assignment","Quiz assignment","Stream","Classwork tab"],a:2,exp:"The Stream in Google Classroom is the communication hub where teachers post announcements visible to all enrolled students."},
+  {q:"A student submits work in Google Classroom. What status does the teacher see?",opts:["Archived","Turned in","Graded","Pending"],a:1,exp:"When a student submits an assignment, Google Classroom marks it as 'Turned in' for the teacher to review."},
+  {q:"Which tool lets a teacher create a visual presentation with slides?",opts:["Google Docs","Google Sheets","Google Slides","Google Forms"],a:2,exp:"Google Slides is Google's presentation tool, equivalent to PowerPoint, used to create and display slideshows."},
+  {q:"What does 'Add-on' mean in Google Workspace context?",opts:["A physical device attached to Chromebook","A third-party extension that adds functionality to Google apps","A setting in Google Admin","A type of Google account"],a:1,exp:"Add-ons are third-party tools that extend the capabilities of Google apps like Docs, Sheets, and Forms with extra features."},
+  {q:"A teacher wants students to research and create a public webpage. Which tool is best?",opts:["Google Docs","Google Slides","Google Sites","Google Forms"],a:2,exp:"Google Sites enables users to build simple, shareable websites without coding — ideal for student publishing projects."},
+  {q:"Which Google Drive feature helps locate a file quickly?",opts:["Starred","Trash","Search bar","Shared with me"],a:2,exp:"The Search bar in Google Drive searches file names, content, and metadata, making it the fastest way to find a specific file."},
+  {q:"How does a teacher return graded work to a student in Google Classroom?",opts:["Email the student","Click 'Return' in the assignment","Print and hand over","Archive the assignment"],a:1,exp:"The 'Return' button in Google Classroom sends the graded assignment back to the student with any teacher feedback."},
+  {q:"Which feature allows a teacher to see revision history on a Google Doc?",opts:["File > New","File > Version history","Edit > Find and replace","Tools > Spelling"],a:1,exp:"'File > Version history' shows every saved version of the document, including who made which changes and when."},
+  {q:"What is the main purpose of Google Calendar in an educational setting?",opts:["Creating assignments","Scheduling events and sharing schedules","Grading students","Storing files"],a:1,exp:"Google Calendar is used to schedule, share, and manage events — teachers can share class schedules and set reminders."},
+  {q:"A teacher wants to give different assignments to different groups of students. Which Google Classroom feature supports this?",opts:["Topics","Stream posts","Assign to individual students or groups","Announcements"],a:2,exp:"Google Classroom allows teachers to post an assignment and select specific students or groups who should receive it."},
+  {q:"Which Google Meet feature lets a teacher control who can join a video call?",opts:["Hand raise","Chat","Host controls","Captions"],a:2,exp:"Host controls give the meeting organiser power to admit participants, mute attendees, and manage who can join."},
+  {q:"A teacher imports a CSV to add students in bulk. Which tool is this done in?",opts:["Google Classroom","Google Forms","Google Contacts","Google Sheets"],a:2,exp:"Google Contacts (via Admin Console or Contacts.google.com) supports CSV import to add multiple contacts at once."},
+  {q:"What does 'Publish to web' do in Google Slides?",opts:["Saves the file as PDF","Creates a shareable link or embed code for public viewing","Sends slides by email","Locks the presentation"],a:1,exp:"'Publish to web' generates a public link or iframe embed code so anyone can view the presentation in a browser."},
+  {q:"Which Google tool is best for collecting survey responses from parents?",opts:["Google Docs","Google Forms","Google Slides","Google Drive"],a:1,exp:"Google Forms is designed for surveys and data collection, automatically compiling responses into a spreadsheet."},
+  {q:"A teacher wants to analyse class quiz scores visually. Which tool is best?",opts:["Google Docs","Google Sheets with charts","Google Sites","Google Keep"],a:1,exp:"Google Sheets allows teachers to store quiz scores and create charts to visualise student performance data."},
+  {q:"What is the benefit of using Google Meet's 'Record meeting' feature?",opts:["It sends notes by email","Students who missed class can watch the session later","It auto-grades attendance","It blocks latecomers"],a:1,exp:"Recording a Google Meet session allows absent students or those who need review to watch the class at their own pace."},
+  {q:"Which feature in Google Docs lets students leave comments without changing the text?",opts:["Suggesting mode","Editing mode","Viewing mode","Presenting mode"],a:0,exp:"Suggesting mode lets users propose edits shown as suggestions, or insert comments, without altering the original text directly."},
+  {q:"How can a teacher prevent students from editing a Google Doc shared with them?",opts:["Set permission to 'Viewer'","Delete students from the document","Lock the document offline","Change the file extension"],a:0,exp:"Sharing with 'Viewer' permission prevents any editing — students can only read and optionally leave comments."},
+  {q:"What does 'Make a copy' do in Google Drive?",opts:["Moves the original file","Creates a duplicate of the file in your Drive","Shares the file with another user","Deletes the original"],a:1,exp:"'Make a copy' creates an independent duplicate of the file saved to your own Drive, leaving the original untouched."},
+  {q:"A teacher uses Google Classroom Topics to organise classwork. What is the main benefit?",opts:["Topics automatically grade work","Topics sort assignments by subject or unit for easier navigation","Topics email parents","Topics sync with Google Calendar"],a:1,exp:"Topics let teachers group assignments, materials, and quizzes by theme or unit, making the Classwork page easier to navigate."},
+  {q:"Which Google Meet feature helps students who are deaf or hard of hearing?",opts:["Polls","Breakout rooms","Live captions","Reactions"],a:2,exp:"Live captions in Google Meet display spoken words as real-time on-screen text, supporting hearing-impaired participants."},
+  {q:"A teacher wants to embed a YouTube video in a Google Slides presentation. This is possible using:",opts:["Insert > Image","Insert > Video","Insert > Audio","Insert > Chart"],a:1,exp:"'Insert > Video' in Google Slides allows you to search YouTube or paste a URL to embed a video directly into a slide."},
+  {q:"What is the main advantage of storing files in Google Drive over a USB drive?",opts:["Files are only on one device","Files are accessible from any device with internet access","Files cannot be shared","USB drives hold more data"],a:1,exp:"Google Drive is cloud-based, so files are accessible from any device with internet, and there's no risk of losing a physical drive."},
+  {q:"Which Google Workspace tool helps a teacher keep personal to-do lists and quick notes?",opts:["Google Docs","Google Sites","Google Keep","Google Forms"],a:2,exp:"Google Keep is a lightweight note-taking app for quick notes, lists, reminders, and labels — ideal for personal organisation."},
+  {q:"A student needs to submit a PDF to Google Classroom. Where do they upload it?",opts:["Stream tab","Classwork tab > relevant assignment > Add attachment","Google Drive settings","Gmail attachment"],a:1,exp:"In Google Classroom, students open the assignment under the Classwork tab and use 'Add attachment' to upload their PDF before submitting."},
+  {q:"Which setting in Google Forms ensures each student can only submit once?",opts:["Shuffle questions","Limit to 1 response","Make quiz","Set timer"],a:1,exp:"Enabling 'Limit to 1 response' (requires Google sign-in) prevents multiple submissions from the same account."},
+  {q:"What does the 'Explore' feature in Google Sheets do?",opts:["Opens a web browser","Provides AI-powered data insights and chart suggestions","Translates cell content","Sends data to Google Forms"],a:1,exp:"Explore uses machine learning to analyse your data and automatically suggest charts, summaries, and pivot tables."},
+  {q:"A teacher creates a Google Site to share class resources. To make it visible to students, they must:",opts:["Download the site","Publish the site","Email the site as HTML","Print the site"],a:1,exp:"Google Sites must be published before anyone can view it via a URL. The Publish button generates the shareable web address."},
+  {q:"Which Google tool allows a teacher to differentiate instruction by assigning different materials to individual students?",opts:["Google Forms","Google Classroom (assign to specific students)","Google Sites","Google Keep"],a:1,exp:"Google Classroom's individual assignment feature lets teachers select which students receive each piece of work or material."},
+  {q:"How can a teacher add a co-teacher to a Google Classroom class?",opts:["Stream > Invite students","People tab > Invite teachers","Settings > Add admin","Classwork > Add teacher"],a:1,exp:"Under the People tab in Google Classroom, teachers can invite co-teachers by email, giving them full teacher-level access."},
+  {q:"What is the purpose of the 'Private comments' feature in Google Classroom assignments?",opts:["Post to the class stream","Allow one-to-one communication between teacher and student about the assignment","Grade the assignment","Email parents"],a:1,exp:"Private comments in a Google Classroom assignment create a private thread only between that student and the teacher."},
+  {q:"A teacher wants to provide audio feedback on student work. Which tool is best integrated for this?",opts:["Google Keep voice note","Google Docs + Mote add-on (voice comments)","Google Slides speaker notes","Google Forms description field"],a:1,exp:"The Mote add-on for Google Docs allows teachers to record and embed voice comments directly alongside student work."},
+  {q:"Which of the following best describes a benefit of Google Workspace for Education Fundamentals?",opts:["It is a paid premium tier only","It offers free core tools like Docs, Drive, Meet, and Classroom for educational institutions","It replaces the school's internet provider","It only works on Chromebooks"],a:1,exp:"Google Workspace for Education Fundamentals is a free suite of tools including Docs, Drive, Meet, and Classroom, available to qualifying educational institutions at no cost."}
+];
+
+let cur=0, ans=new Array(Q.length).fill(null), done=false, reviewing=false;
+
+function score(){return ans.filter((a,i)=>a===Q[i].a).length}
+function answered(){return ans.filter(a=>a!==null).length}
+
+function renderStats(){
+  const s=score(), a=answered(), pct=Math.round(s/Q.length*100);
+  return `<div class="stats-row">
+    <div class="stat"><div class="stat-val">${a}</div><div class="stat-lbl">Answered</div></div>
+    <div class="stat"><div class="stat-val">${Q.length-a}</div><div class="stat-lbl">Remaining</div></div>
+    <div class="stat"><div class="stat-val">${a>0?Math.round(s/a*100):0}%</div><div class="stat-lbl">Accuracy</div></div>
+  </div>`;
+}
+
+function render(){
+  const m=document.getElementById('main');
+  if(done){
+    const s=score(), pct=Math.round(s/Q.length*100), pass=pct>=75;
+    let rev='';
+    if(reviewing){
+      rev=`<div class="review-section">`+Q.map((q,qi)=>{
+        const u=ans[qi],c=u===q.a;
+        const opts=q.opts.map((o,i)=>{
+          let cls='opt dis';
+          if(i===q.a)cls+=' show-ok';
+          else if(i===u)cls+=' bad';
+          const ic=i===q.a?'<i class="ti ti-check opt-icon" aria-hidden="true"></i>':i===u?'<i class="ti ti-x opt-icon" aria-hidden="true"></i>':'';
+          return `<button class="${cls}"><span class="opt-letter">${'ABCD'[i]}.</span><span>${o}</span>${ic}</button>`;
+        }).join('');
+        return `<div class="review-item">
+          <div class="review-header">
+            <span class="review-num">Question ${qi+1}</span>
+            <span class="review-tag ${c?'ok':'bad'}"><i class="ti ti-${c?'check':'x'}" aria-hidden="true"></i> ${c?'Correct':'Incorrect'}</span>
+          </div>
+          <div class="qtext" style="font-size:14px;margin-bottom:10px">${q.q}</div>
+          <div class="opts">${opts}</div>
+          <div class="fb ${c?'ok':'bad'}" style="margin-top:10px"><i class="ti ti-${c?'circle-check':'alert-circle'}" aria-hidden="true"></i><span>${q.exp}</span></div>
+        </div>`;
+      }).join('')+'</div>';
+    }
+    m.innerHTML=`<div class="qcard result-hero">
+      <div class="result-ring"><span class="result-pct">${pct}%</span><span class="result-sub">${s}/${Q.length}</span></div>
+      <div class="pass-badge ${pass?'pass':'fail'}"><i class="ti ti-${pass?'trophy':'refresh'}" aria-hidden="true"></i> ${pass?'Passed!':'Not yet'}</div>
+      <p class="result-msg">${pass?'Great work! You have demonstrated the knowledge expected of a Google Certified Educator Level 1.':'You need 75% to pass. Review the answers below and try again!'}</p>
+      <div class="result-actions">
+        <button onclick="reviewing=!reviewing;render()">${reviewing?'Hide':'Review all answers'}</button>
+        <button class="btn-primary" onclick="restart()"><i class="ti ti-refresh" aria-hidden="true"></i> Restart quiz</button>
+      </div>
+    </div>${rev}`;
+    return;
+  }
+  const q=Q[cur], a=ans[cur], replied=a!==null;
+  const pct=Math.round(cur/Q.length*100);
+  const opts=q.opts.map((o,i)=>{
+    let cls='opt';
+    if(replied){
+      cls+=' dis';
+      if(i===q.a)cls+=' show-ok';
+      else if(i===a)cls+=' bad';
+    }
+    const ic=replied?(i===q.a?'<i class="ti ti-check opt-icon" aria-hidden="true"></i>':i===a?'<i class="ti ti-x opt-icon" aria-hidden="true"></i>':''):'';
+    return `<button class="${cls}" onclick="pick(${i})"><span class="opt-letter">${'ABCD'[i]}.</span><span>${o}</span>${ic}</button>`;
+  }).join('');
+  const fb=replied?`<div class="fb ${a===q.a?'ok':'bad'}"><i class="ti ti-${a===q.a?'circle-check':'alert-circle'}" aria-hidden="true"></i><span><strong>${a===q.a?'Correct!':'Incorrect.'}</strong> ${q.exp}</span></div>`:'';
+  m.innerHTML=renderStats()+`
+  <div class="prog-wrap">
+    <div class="prog-header"><span style="font-weight:500;color:var(--color-text-primary)">Question ${cur+1} <span style="font-weight:400;color:var(--color-text-secondary)">of ${Q.length}</span></span><span>${pct}% complete</span></div>
+    <div class="prog-track"><div class="prog-fill" style="width:${pct}%"></div></div>
+  </div>
+  <div class="qcard">
+    <div class="qbadge"><i class="ti ti-help-circle" style="font-size:12px" aria-hidden="true"></i> Question ${cur+1}</div>
+    <div class="qtext">${q.q}</div>
+    <div class="opts">${opts}</div>
+    ${fb}
+  </div>
+  <div class="nav-row">
+    <button ${cur===0?'disabled':''} onclick="go(-1)"><i class="ti ti-arrow-left" aria-hidden="true"></i> Previous</button>
+    ${cur<Q.length-1
+      ?`<button ${!replied?'disabled':''} onclick="go(1)">Next <i class="ti ti-arrow-right" aria-hidden="true"></i></button>`
+      :`<button class="btn-primary" ${ans.some(a=>a===null)?'disabled':''} onclick="finish()"><i class="ti ti-send" aria-hidden="true"></i> Submit quiz</button>`}
+  </div>
+  <p style="font-size:12px;color:var(--color-text-secondary);text-align:center;margin-top:8px">${answered()} of ${Q.length} answered${ans.some(a=>a===null)?' &nbsp;·&nbsp; Answer all questions to submit':''}</p>`;
+}
+
+function pick(i){if(ans[cur]!==null)return;ans[cur]=i;render()}
+function go(d){cur=Math.max(0,Math.min(Q.length-1,cur+d));render()}
+function finish(){if(ans.some(a=>a===null))return;done=true;render()}
+function restart(){cur=0;ans=new Array(Q.length).fill(null);done=false;reviewing=false;render()}
+render();
+</script>
